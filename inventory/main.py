@@ -1,8 +1,15 @@
-from sqlite3 import DatabaseError
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from redis_om import get_redis_connection, HashModel
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["*" ]
+    allow_headers=["*"],
+)
 
 redis = get_redis_connection(
     host="redis-16337.c301.ap-south-1-1.ec2.cloud.redislabs.com",
@@ -22,4 +29,4 @@ class Product(HashModel):
 
 @app.get("/products")
 def all():
-    return [];
+    return Product.all_pks(); 
