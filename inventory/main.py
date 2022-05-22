@@ -1,4 +1,3 @@
-from itertools import product
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from redis_om import get_redis_connection, HashModel
@@ -46,3 +45,11 @@ def format(pk: str):
 @app.post("/products")
 def create(product: Product):
     return product.save()
+
+@app.get("/products/{pk}")
+def get(pk: str):
+     return Product.get(pk)
+
+@app.delete("/products/{pk}")
+def delete(pk: str):
+    Product.delete(pk)
