@@ -17,12 +17,11 @@ while(True):
         if results != []:
             for result in results:
                 obj = result[1][0][1]
-                product = Product.get(obj['product_id'])
-
-                if product:
+                try:
+                    product = Product.get(obj['product_id'])
                     product.quantity = product.quantity - int(obj['quantity'])
                     product.save()
-                else:
+                except:
                     redis.xadd('refund_order', obj, '*')
 
     except Exception as e:
